@@ -35,7 +35,7 @@ uniform vec4 u_color_bg;
 
 const float pxRange = 2.0;
 
-const bool is_msdf = true;
+const bool is_msdf = false;
 const bool is_alpha = false;
 
 float median(float r, float g, float b) {
@@ -483,6 +483,8 @@ struct HoverHandler : public pangolin::Handler
 
 };
 
+extern const unsigned char AnonymousPro_ttf[];
+
 void MainRenderTextWithNewAtlas()
 {
     using namespace pangolin;
@@ -493,7 +495,7 @@ void MainRenderTextWithNewAtlas()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    pangolin::GlFont font("/Users/stevenlovegrove/code/msdf-atlas-gen/fonts/AnonymousPro.ttf_map.png", "/Users/stevenlovegrove/code/msdf-atlas-gen/fonts/AnonymousPro.ttf_map.json");
+    pangolin::GlFont font(AnonymousPro_ttf, 32, 1024, 1024, false);
 //    pangolin::GlFont font("/Users/stevenlovegrove/code/msdf-atlas-gen/fonts/anon-bottom/AnonymousPro.ttf_map.png", "/Users/stevenlovegrove/code/msdf-atlas-gen/fonts/anon-bottom/AnonymousPro.ttf_map.json");
 //    pangolin::GlFont font("/Users/stevenlovegrove/code/Pangolin/components/pango_opengl/src/fonts/AnonymousPro.ttf", 32);
 //    pangolin::GlFont font("/Users/stevenlovegrove/code/msdf-atlas-gen/fonts/anon_min/AnonymousPro.ttf_map.png", "/Users/stevenlovegrove/code/msdf-atlas-gen/fonts/anon_min/AnonymousPro.ttf_map.json");
@@ -518,6 +520,9 @@ void MainRenderTextWithNewAtlas()
 
         {
             auto& v = DisplayBase().v;
+            v.Activate();
+
+            std::cout << v.w << std::endl;
 
             prog_text.Bind();
             prog_text.SetUniform("u_scale",  scale / v.w, scale / v.h);

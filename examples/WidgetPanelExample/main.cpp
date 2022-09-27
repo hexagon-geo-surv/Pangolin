@@ -35,6 +35,9 @@ void MainWidgets()
     });
     Var<std::string> test7("ui.textbox", "Hello");
 
+//    panel.font_offsets.Save("offsets.exr");
+//    panel.font->mTex.Save("tex.exr");
+
     while( !pangolin::ShouldQuit() )
     {
         glClearColor(0.7, 0.7, 0.7, 1.0);

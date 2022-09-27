@@ -39,7 +39,12 @@ WidgetPanel::WidgetPanel()
     prog_widget.Link();
     CheckGlDieOnError();
 
-    prog_text.AddShaderFromFile(pangolin::GlSlAnnotatedShader, shader_text, {}, {shader_dir});
+//    prog_text.AddShaderFromFile(pangolin::GlSlAnnotatedShader, shader_text, {}, {shader_dir});
+//    glBindAttribLocation(prog_text.ProgramId(), DEFAULT_LOCATION_POSITION, DEFAULT_NAME_POSITION);
+//    prog_text.Link();
+//    CheckGlDieOnError();
+
+    prog_text.AddShaderFromFile(pangolin::GlSlAnnotatedShader, shader_dir + "main_text_no_geom.glsl", {}, {shader_dir});
     glBindAttribLocation(prog_text.ProgramId(), DEFAULT_LOCATION_POSITION, DEFAULT_NAME_POSITION);
     prog_text.Link();
     CheckGlDieOnError();
@@ -144,38 +149,47 @@ void WidgetPanel::UpdateCharsVBO()
 {
     prog_text.Bind();
     prog_text.SetUniform("u_font_atlas", 0);
-    prog_text.SetUniform("u_font_offsets", 1);
     prog_text.SetUniform("u_font_bitmap_type", static_cast<int>(font->bitmap_type) );
     prog_text.SetUniform("u_scale", font_scale);
     prog_text.SetUniform("u_max_sdf_dist_uv", font->bitmap_max_sdf_dist_uv[0], font->bitmap_max_sdf_dist_uv[1] );
     prog_text.SetUniform("u_color", 0.0f, 0.0f, 0.0f);
+    prog_text.Unbind();
 
-    const float text_pad = 2.5*widget_padding;
 
-    std::vector<Eigen::Vector3f> host_vbo_pos;
-    std::vector<uint16_t> host_vbo_index;
-    for(int i=0; i < widgets.size(); ++i) {
-        const auto& w = widgets[i];
+//    prog_text.Bind();
+//    prog_text.SetUniform("u_font_atlas", 0);
+//    prog_text.SetUniform("u_font_offsets", 1);
+//    prog_text.SetUniform("u_font_bitmap_type", static_cast<int>(font->bitmap_type) );
+//    prog_text.SetUniform("u_scale", font_scale);
+//    prog_text.SetUniform("u_max_sdf_dist_uv", font->bitmap_max_sdf_dist_uv[0], font->bitmap_max_sdf_dist_uv[1] );
+//    prog_text.SetUniform("u_color", 0.0f, 0.0f, 0.0f);
 
-        // y-position is roughly center with fudge factor since text is balanced low.
-        const float y_pos = (i+0.5)*widget_height + 0.3*font_scale*font->font_height_px;
+//    const float text_pad = 2.5*widget_padding;
 
-        AddTextToHostBuffer(toUtf32(w.text), text_pad, y_pos, host_vbo_pos, host_vbo_index);
+//    std::vector<Eigen::Vector3f> host_vbo_pos;
+//    std::vector<uint16_t> host_vbo_index;
+//    for(int i=0; i < widgets.size(); ++i) {
+//        const auto& w = widgets[i];
 
-        //            if(w.widget_type == WidgetType::slider)
-        if(!w.value.empty())
-        {
-            const auto utf32 = toUtf32(w.value);
-            const float width = TextWidthPix(utf32);
-            AddTextToHostBuffer(utf32, v.w - text_pad - width, y_pos, host_vbo_pos, host_vbo_index);
-        }
-    }
+//        // y-position is roughly center with fudge factor since text is balanced low.
+//        const float y_pos = (i+0.5)*widget_height + 0.3*font_scale*font->font_height_px;
 
-    vbo_chars_pos = pangolin::GlBuffer( pangolin::GlArrayBuffer, host_vbo_pos );
-    vbo_chars_index = pangolin::GlBuffer( pangolin::GlArrayBuffer, host_vbo_index );
-    vao_chars.AddVertexAttrib(pangolin::DEFAULT_LOCATION_POSITION, vbo_chars_pos);
-    vao_chars.AddVertexAttrib(1, vbo_chars_index);
-    vao_chars.Unbind();
+//        AddTextToHostBuffer(toUtf32(w.text), text_pad, y_pos, host_vbo_pos, host_vbo_index);
+
+//        //            if(w.widget_type == WidgetType::slider)
+//        if(!w.value.empty())
+//        {
+//            const auto utf32 = toUtf32(w.value);
+//            const float width = TextWidthPix(utf32);
+//            AddTextToHostBuffer(utf32, v.w - text_pad - width, y_pos, host_vbo_pos, host_vbo_index);
+//        }
+//    }
+
+//    vbo_chars_pos = pangolin::GlBuffer( pangolin::GlArrayBuffer, host_vbo_pos );
+//    vbo_chars_index = pangolin::GlBuffer( pangolin::GlArrayBuffer, host_vbo_index );
+//    vao_chars.AddVertexAttrib(pangolin::DEFAULT_LOCATION_POSITION, vbo_chars_pos);
+//    vao_chars.AddVertexAttrib(1, vbo_chars_index);
+//    vao_chars.Unbind();
 }
 
 void WidgetPanel::Render()
@@ -190,24 +204,38 @@ void WidgetPanel::Render()
     }
 
     Activate();
-    prog_widget.Bind();
-    prog_widget.SetUniform("u_T_cm", T_cm);
-    vao_widgets.Bind();
-    glDrawArrays(GL_POINTS, 0, vbo_widgets.num_elements);
-    prog_widget.Unbind();
-    vao_widgets.Unbind();
+//    prog_widget.Bind();
+//    prog_widget.SetUniform("u_T_cm", T_cm);
+//    vao_widgets.Bind();
+//    glDrawArrays(GL_POINTS, 0, vbo_widgets.num_elements);
+//    prog_widget.Unbind();
+//    vao_widgets.Unbind();
+
+//    glDisable(GL_DEPTH_TEST);
+//    prog_text.Bind();
+//    prog_text.SetUniform("u_T_cm", T_cm);
+//    vao_chars.Bind();
+//    glActiveTexture(GL_TEXTURE0);
+//    font->mTex.Bind();
+//    glActiveTexture(GL_TEXTURE1);
+//    font_offsets.Bind();
+//    glDrawArrays(GL_POINTS, 0, vbo_chars_index.num_elements);
+//    prog_text.Unbind();
+//    vao_chars.Unbind();
+//    glEnable(GL_DEPTH_TEST);
+
+    text = font->Text("testing");
 
     glDisable(GL_DEPTH_TEST);
     prog_text.Bind();
     prog_text.SetUniform("u_T_cm", T_cm);
-    vao_chars.Bind();
+    prog_text.SetUniform("u_scale", 100.0f);
+//    vao_chars.Bind();
     glActiveTexture(GL_TEXTURE0);
     font->mTex.Bind();
-    glActiveTexture(GL_TEXTURE1);
-    font_offsets.Bind();
-    glDrawArrays(GL_POINTS, 0, vbo_chars_index.num_elements);
+    text.DrawGlSl();
     prog_text.Unbind();
-    vao_chars.Unbind();
+//    vao_chars.Unbind();
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -222,6 +250,15 @@ void WidgetPanel::Keyboard(View&, unsigned char key, int x, int y, bool pressed)
 
 void WidgetPanel::Mouse(View&, MouseButton button, int x, int y, bool pressed, int button_state)
 {
+    if(button == MouseWheelUp) {
+        scroll_offset += font->font_height_px / 2.0;
+        return;
+    }
+    if(button == MouseWheelDown) {
+        scroll_offset -= font->font_height_px / 2.0;
+        return;
+    }
+
     auto w = WidgetXY(x,y);
     if(selected_widget >= 0) {
         auto& sw = widgets[selected_widget];

@@ -81,6 +81,7 @@ struct WidgetPanel : public View, public Handler
 
     std::shared_ptr<GlFont> font;
     GlTexture font_offsets;
+    GlText text;
 
     OpenGlMatrix T_cm;
     pangolin::GlSlProgram prog_widget;
