@@ -3,6 +3,9 @@
 
 #include <pangolin/image/runtime_image.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 #ifdef HAVE_LZ4
 #  include <lz4.h>
 #endif
@@ -85,3 +88,4 @@ IntensityImage<> LoadLz4(std::istream& in)
 }
 
 }
+#pragma GCC diagnostic pop

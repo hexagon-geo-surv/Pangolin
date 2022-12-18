@@ -4,6 +4,9 @@
 
 #include <pangolin/image/runtime_image.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 #ifdef HAVE_ZSTD
 #  include <zstd.h>
 #endif
@@ -120,3 +123,4 @@ IntensityImage<> LoadZstd(std::istream& in)
 }
 
 }
+#pragma GCC diagnostic pop
