@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Eigen/Core>
-#include <pangolin/maths/min_max.h>
+#include <pangolin/maths/interval.h>
 #include <pangolin/utils/shared.h>
 #include <sophus/image/image.h>
 
@@ -18,7 +18,7 @@ class DepthSampler
   enum class DepthKind { clip, zaxis, radial };
 
   struct Sample {
-    Interval<double> min_max;
+    SegmentF64 min_max = SegmentF64::empty();
     DepthKind depth_kind;
   };
 
@@ -28,7 +28,7 @@ class DepthSampler
   };
 
   virtual std::optional<Sample> sampleDepth(
-      const SampleLocation& pix, int patch_rad, Interval<double> near_far,
+      const SampleLocation& pix, int patch_rad, SegmentF64 near_far,
       const Context* default_context) = 0;
 
   virtual ~DepthSampler() {}
