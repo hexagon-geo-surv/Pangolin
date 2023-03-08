@@ -162,8 +162,8 @@ struct DrawableConversionTraits<draw::Axes> {
 // draw::Axes convenient methods
 
 template <>
-struct DrawableConversionTraits<sophus::Se3F32> {
-  static Shared<Drawable> makeDrawable(const sophus::Se3F32& x)
+struct DrawableConversionTraits<sophus::Isometry3F32> {
+  static Shared<Drawable> makeDrawable(const sophus::Isometry3F32& x)
   {
     draw::Axes axes;
     axes.drawable_from_axis_poses.push_back(x);
@@ -172,8 +172,8 @@ struct DrawableConversionTraits<sophus::Se3F32> {
 };
 
 template <typename T>
-struct DrawableConversionTraits<sophus::Se3<T>> {
-  static Shared<Drawable> makeDrawable(const sophus::Se3<T>& x)
+struct DrawableConversionTraits<sophus::Isometry3<T>> {
+  static Shared<Drawable> makeDrawable(const sophus::Isometry3<T>& x)
   {
     return makeDrawable(x.template cast<float>());
   }

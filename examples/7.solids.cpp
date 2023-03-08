@@ -76,7 +76,7 @@ int main(int argc, char** argv)
     parent_from_axis_poses.push_back(parent_from_axis_poses.back() * delta);
   }
 
-  sophus::SE3d scene_from_parent = sophus::Se3F64::transZ(0.2);
+  sophus::SE3d scene_from_parent = sophus::Isometry3F64::fromTz(0.2);
   scene->addInScene(checker_plane);
   scene->addInSceneAt(
       draw::Axes{.drawable_from_axis_poses = parent_from_axis_poses},

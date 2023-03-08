@@ -11,20 +11,20 @@ namespace sophus
 {
 
 template <class TT>
-struct ImageTraits<So3<TT>> {
+struct ImageTraits<Rotation3<TT>> {
   // (X,Y,Z,W) quaternion
   static const int kNumChannels = 4;
-  using TPixel = So3<TT>;
+  using TPixel = Rotation3<TT>;
   using ChannelT = TT;
 };
 
 template <class TT>
-struct ImageTraits<Se3<TT>> {
+struct ImageTraits<Isometry3<TT>> {
   // (X,Y,Z,W) quaternion +
   // (tx,ty,tz,_) translation
   // where _ is padding with undefined value
   static const int kNumChannels = 8;
-  using TPixel = Se3<TT>;
+  using TPixel = Isometry3<TT>;
   using ChannelT = TT;
 };
 
